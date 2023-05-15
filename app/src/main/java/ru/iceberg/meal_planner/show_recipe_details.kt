@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 
 data class Meal(
     val category: String = "",
@@ -23,7 +22,7 @@ class show_recipe_details : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_recipe_details);
+        setContentView(R.layout.activity_show_recipe_details)
 
         val breakfastJson = intent.getStringExtra("breakfastJson")
 

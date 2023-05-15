@@ -3,7 +3,6 @@ package ru.iceberg.meal_planner
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +11,6 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 
 
 class planner : AppCompatActivity() {
@@ -37,7 +35,6 @@ class planner : AppCompatActivity() {
         // Вычисляем количество калорий, необходимых пользователю
         val calories = calculateCalories(weight, height, gender, age)
         caloriesTextView.text = "Количество калорий: $calories"
-        val breakfastsRef = FirebaseDatabase.getInstance().getReference("breakfasts")
         val databaseUrl = "https://meal-planner-8481d-default-rtdb.europe-west1.firebasedatabase.app"
         val databaseRef = FirebaseDatabase.getInstance(databaseUrl).reference
         val coroutineScope = CoroutineScope(Dispatchers.Default)
@@ -311,13 +308,4 @@ class planner : AppCompatActivity() {
         return menu
     }
 
-
-    fun openDetailScreen(view: View?) {
-        // Создание интента для открытия новой активности
-        val intent = Intent(this, show_recipe_details::class.java)
-        startActivity(intent)
-    }
 }
-
-
-
