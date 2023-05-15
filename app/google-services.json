@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1051963500213",
+    "firebase_url": "https://meal-planner-8481d-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "meal-planner-8481d",
+    "storage_bucket": "meal-planner-8481d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051963500213:android:2eebe20af22320510680fc",
+        "android_client_info": {
+          "package_name": "ru.iceberg.meal_planner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1051963500213-m0k1j2nbg0rp3qusj4eefpkuo14tu3lc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5-W49-vKDwuGdOX-HkZXY97OCLdOyHBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051963500213-m0k1j2nbg0rp3qusj4eefpkuo14tu3lc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
