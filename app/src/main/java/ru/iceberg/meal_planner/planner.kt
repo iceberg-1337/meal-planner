@@ -107,6 +107,7 @@ class planner : AppCompatActivity() {
                         val fats = randomSnack.child("fats").value
                         val proteins = randomSnack.child("proteins").value
                         val ingredients = randomSnack.child("ingredients").value
+                        val preparing_time = randomSnack.child("preparing_time").value
                         val recipe = randomSnack.child("recipe").value
 
                         val snackData = mapOf(
@@ -116,6 +117,7 @@ class planner : AppCompatActivity() {
                             "fats" to fats,
                             "proteins" to proteins,
                             "ingredients" to ingredients,
+                            "preparing_time" to preparing_time,
                             "recipe" to recipe
                         )
                         continuation.resume(snackData)
@@ -151,6 +153,7 @@ class planner : AppCompatActivity() {
                         val fats = randomSnack.child("fats").value
                         val proteins = randomSnack.child("proteins").value
                         val ingredients = randomSnack.child("ingredients").value
+                        val preparing_time = randomSnack.child("preparing_time").value
                         val recipe = randomSnack.child("recipe").value
 
                         val snackData = mapOf(
@@ -160,6 +163,7 @@ class planner : AppCompatActivity() {
                             "fats" to fats,
                             "proteins" to proteins,
                             "ingredients" to ingredients,
+                            "preparing_time" to preparing_time,
                             "recipe" to recipe
                         )
                         continuation.resume(snackData)
@@ -194,6 +198,7 @@ class planner : AppCompatActivity() {
                         val fats = randomSnack.child("fats").value
                         val proteins = randomSnack.child("proteins").value
                         val ingredients = randomSnack.child("ingredients").value
+                        val preparing_time = randomSnack.child("preparing_time").value
                         val recipe = randomSnack.child("recipe").value
 
                         val Data = mapOf(
@@ -203,6 +208,7 @@ class planner : AppCompatActivity() {
                             "fats" to fats,
                             "proteins" to proteins,
                             "ingredients" to ingredients,
+                            "preparing_time" to preparing_time,
                             "recipe" to recipe
                         )
                         continuation.resume(Data)
@@ -238,6 +244,7 @@ class planner : AppCompatActivity() {
                         val fats = randomSnack.child("fats").value
                         val proteins = randomSnack.child("proteins").value
                         val ingredients = randomSnack.child("ingredients").value
+                        val preparing_time = randomSnack.child("preparing_time").value
                         val recipe = randomSnack.child("recipe").value
 
                         val Data = mapOf(
@@ -247,6 +254,7 @@ class planner : AppCompatActivity() {
                             "fats" to fats,
                             "proteins" to proteins,
                             "ingredients" to ingredients,
+                            "preparing_time" to preparing_time,
                             "recipe" to recipe
                         )
                         continuation.resume(Data)

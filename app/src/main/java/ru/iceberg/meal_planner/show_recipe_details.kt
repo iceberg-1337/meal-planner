@@ -14,7 +14,7 @@ data class Meal(
     val fats: Int = 0,
     val ingredients: Map<String, String> = emptyMap(),
     val name: String = "",
-    val preparingTime: String = "",
+    val preparing_time: String = "",
     val proteins: Int = 0,
     val recipe: List<String> = emptyList()
 )
@@ -42,7 +42,7 @@ class show_recipe_details : AppCompatActivity() {
         findViewById<TextView>(R.id.fatsTextView).text = "Жиры: ${meal.fats}"
         findViewById<TextView>(R.id.proteinsTextView).text = "Белки: ${meal.proteins}"
         findViewById<TextView>(R.id.ingredientsTextView).text = "Ингредиенты:\n${meal.ingredients}"
-        findViewById<TextView>(R.id.preparingTimeTextView).text = "Время приготовления: ${meal.preparingTime}"
+        findViewById<TextView>(R.id.preparingTimeTextView).text = "Время приготовления: ${meal.preparing_time}"
         findViewById<TextView>(R.id.recipeTextView).text = "Рецепт:\n${meal.recipe}"
         }
 
