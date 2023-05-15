@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Mealplanner"
         tools:targetApi="31">
         <activity
+            android:name=".show_recipe_details"
+            android:exported="false" />
+        <activity
             android:name=".planner"
             android:exported="false" />
         <activity

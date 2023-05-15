@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        tools:text="Количество калорий:" />
 
     <!-- Список блюд на день -->
     <ScrollView
@@ -33,6 +35,7 @@
                 android:textStyle="bold"/>
 
             <Button
+                android:id="@+id/breakfastButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Омлет (300 калорий)"
@@ -47,6 +50,7 @@
                 android:textStyle="bold"/>
 
             <Button
+                android:id="@+id/dinnerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Салат (200 калорий)"
@@ -61,6 +65,7 @@
                 android:textStyle="bold"/>
 
             <Button
+                android:id="@+id/supperButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Курица с овощами (400 калорий)"
@@ -75,6 +80,7 @@
                 android:textStyle="bold"/>
 
             <Button
+                android:id="@+id/snackButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Фрукты (100 калорий)"
