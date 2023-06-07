@@ -40,9 +40,19 @@ class show_recipe_details : AppCompatActivity() {
         findViewById<TextView>(R.id.carbohydratesTextView).text = "Углеводы: ${meal.carbohydrates}"
         findViewById<TextView>(R.id.fatsTextView).text = "Жиры: ${meal.fats}"
         findViewById<TextView>(R.id.proteinsTextView).text = "Белки: ${meal.proteins}"
-        findViewById<TextView>(R.id.ingredientsTextView).text = "Ингредиенты:\n${meal.ingredients}"
+        val ingredientsString = StringBuilder("Ингредиенты:\n")
+        val ingredients = meal.ingredients
+        ingredients.forEach { (ingredient, count) ->
+            ingredientsString.append("$ingredient: $count, \n")
+        }
+        findViewById<TextView>(R.id.ingredientsTextView).text = ingredientsString.toString()
         findViewById<TextView>(R.id.preparingTimeTextView).text = "Время приготовления: ${meal.preparing_time}"
-        findViewById<TextView>(R.id.recipeTextView).text = "Рецепт:\n${meal.recipe}"
+        val recipe = meal.recipe
+        val recipeString = StringBuilder("Рецепт:\n")
+        recipe.forEachIndexed { index, step ->
+            recipeString.append("${index + 1}. $step\n")
+        }
+        findViewById<TextView>(R.id.recipeTextView).text = recipeString.toString()
         }
 
 }

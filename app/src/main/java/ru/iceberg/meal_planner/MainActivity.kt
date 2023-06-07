@@ -1,17 +1,14 @@
 package ru.iceberg.meal_planner
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,17 +18,32 @@ class MainActivity : AppCompatActivity() {
     private lateinit var radioGroupGender: RadioGroup
     private lateinit var radioButtonMale: RadioButton
     private lateinit var radioButtonFemale: RadioButton
-    private lateinit var radioGroupFatPercentage: RadioGroup
-    private lateinit var radioButtonLowFat: RadioButton
-    private lateinit var radioButtonNormalFat: RadioButton
-    private lateinit var radioButtonHighFat: RadioButton
     private lateinit var spinnerActivityLevel: Spinner
-    private lateinit var spinnerTarget: Spinner
     private lateinit var buttonSave: Button
 
+    private val plannerResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val calories = data?.getIntExtra("calories", 0)
+            Toast.makeText(this, "Количество калорий: $calories", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.generator -> {
+                    val intent = Intent(this, planner::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
 
         // Находим все элементы пользовательского интерфейса по их ID
         editTextHeight = findViewById(R.id.editTextHeight)
@@ -40,12 +52,7 @@ class MainActivity : AppCompatActivity() {
         radioGroupGender = findViewById(R.id.radioGroupGender)
         radioButtonMale = findViewById(R.id.radioButtonMale)
         radioButtonFemale = findViewById(R.id.radioButtonFemale)
-        radioGroupFatPercentage = findViewById(R.id.radioGroupFatPercentage)
-        radioButtonLowFat = findViewById(R.id.radioButtonLowFat)
-        radioButtonNormalFat = findViewById(R.id.radioButtonNormalFat)
-        radioButtonHighFat = findViewById(R.id.radioButtonHighFat)
         spinnerActivityLevel = findViewById(R.id.spinnerActivityLevel)
-        spinnerTarget = findViewById(R.id.spinnerTarget)
         buttonSave = findViewById(R.id.buttonSave)
 
         // Устанавливаем слушатель нажатия на кнопку "Сохранить"
@@ -55,33 +62,70 @@ class MainActivity : AppCompatActivity() {
             val weight = editTextWeight.text.toString().toDoubleOrNull()
             val age = editTextAge.text.toString().toIntOrNull()
             val gender = if (radioButtonMale.isChecked) "Мужской" else "Женский"
-            val fatPercentage = when {
-                radioButtonLowFat.isChecked -> "Низкий"
-                radioButtonNormalFat.isChecked -> "Нормальный"
-                else -> "Высокий"
-            }
             val activityLevel = spinnerActivityLevel.selectedItem.toString()
-            val target = spinnerTarget.selectedItem.toString()
-
 
             // Проверяем, что все значения были введены корректно
             if (height == null || weight == null || age == null) {
                 Toast.makeText(this, "Пожалуйста, введите корректные значения", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
+            val calories = calculateCalories(weight, height, gender, age, activityLevel)
+            val calories_txt = "Количество калорий: $calories"
+            val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putString("calories", calories_txt.toString())
+            editor.apply()
 
-            buttonSave.setOnClickListener {
-                // Создаем Intent для перехода на новую страницу
-                val intent = Intent(this, planner::class.java)
-                intent.putExtra("weight", weight)
-                intent.putExtra("height", height)
-                intent.putExtra("age", age)
-                intent.putExtra("gender", gender)
-                startActivity(intent)
-            }
+            // Создаем Intent для перехода на новую страницу
+            val intent = Intent(this, planner::class.java)
+            intent.putExtra("weight", weight)
+            intent.putExtra("height", height)
+            intent.putExtra("age", age)
+            intent.putExtra("gender", gender)
+            intent.putExtra("activityLevel", activityLevel)
+
+            // Запускаем экран Planner с помощью resultLauncher
+            startActivity(intent)
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("height", editTextHeight.text.toString())
+        editor.putString("weight", editTextWeight.text.toString())
+        editor.putString("age", editTextAge.text.toString())
+        editor.putInt("gender", radioGroupGender.checkedRadioButtonId)
+        editor.putInt("activityLevel", spinnerActivityLevel.selectedItemPosition)
+        editor.apply()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        editTextHeight.setText(sharedPreferences.getString("height", ""))
+        editTextWeight.setText(sharedPreferences.getString("weight", ""))
+        editTextAge.setText(sharedPreferences.getString("age", ""))
+        radioGroupGender.check(sharedPreferences.getInt("gender", R.id.radioButtonMale))
+        spinnerActivityLevel.setSelection(sharedPreferences.getInt("activityLevel", 0))
+    }
+
+    private fun calculateCalories(weight: Double, height: Double, gender: String?, age: Int, activityLevel: String?): Int {
+        val coef: Double = if (activityLevel == "минимальный") 1.2
+        else if (activityLevel == "низкий") 1.375
+        else if (activityLevel == "умеренный") 1.55
+        else if (activityLevel == "высокий") 1.7
+        else 1.9
+        val calories = if (gender == "Мужской") {
+            66.5 + (13.75 * weight)+ (5.003 * height)- (6.775 * age) * coef
+        } else {
+            655.1 + (9.563 * weight ) + (1.85 * height )-  (4.676 * age ) * coef
+        }
+        return calories.toInt()
+    }
 
 }
-

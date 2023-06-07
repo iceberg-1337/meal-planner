@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="activity_levels">
+        <item>минимальный</item>
         <item>низкий</item>
         <item>умеренный </item>
-        <item>интенсивный</item>
+        <item>высокий</item>
+        <item>экстремальный</item>
     </string-array>
 
-    <string-array name="target">
-        <item>похудеть</item>
-        <item>сохранить вес </item>
-        <item>набрать вес</item>
-    </string-array>
 </resources>
