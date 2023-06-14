@@ -60,17 +60,7 @@ class planner : AppCompatActivity() {
         val databaseUrl = "https://meal-planner-8481d-default-rtdb.europe-west1.firebasedatabase.app"
         val databaseRef = FirebaseDatabase.getInstance(databaseUrl).reference
         val coroutineScope = CoroutineScope(Dispatchers.Default)
-        refreshButton.setOnClickListener {
-            coroutineScope.launch {
-                val menu = generateMenu(databaseRef, calories)
-                runOnUiThread {
-                    breakfastButton.text = "${menu[0]["name"]} (${menu[0]["calories"]} ккал)"
-                    dinnerButton.text = "${menu[1]["name"]} (${menu[1]["calories"]} ккал)"
-                    supperButton.text = "${menu[2]["name"]} (${menu[2]["calories"]} ккал)"
-                    snackButton.text = "${menu[3]["name"]} (${menu[3]["calories"]} ккал)"
-                }
-            }
-        }
+
         coroutineScope.launch {
             val menu = generateMenu(databaseRef, calories)
             runOnUiThread {
@@ -122,6 +112,34 @@ class planner : AppCompatActivity() {
                         supperButton.text = "${menu[2]["name"]} (${menu[2]["calories"]} ккал)"
                         snackButton.text = "${menu[3]["name"]} (${menu[3]["calories"]} ккал)"
                     }
+                    breakfastButton.setOnClickListener {
+                        val breakfastRecipe = menu[0]
+                        val breakfastRecipeJson = Gson().toJson(breakfastRecipe)
+                        val intent = Intent(this@planner, show_recipe_details::class.java)
+                        intent.putExtra("breakfastJson", breakfastRecipeJson)
+                        startActivity(intent)
+                    }
+                    dinnerButton.setOnClickListener {
+                        val dinnerRecipe = menu[1]
+                        val dinnerRecipeJson = Gson().toJson(dinnerRecipe)
+                        val intent = Intent(this@planner, show_recipe_details::class.java)
+                        intent.putExtra("dinnerJson", dinnerRecipeJson)
+                        startActivity(intent)
+                    }
+                    supperButton.setOnClickListener {
+                        val supperRecipe = menu[2]
+                        val supperRecipeJson = Gson().toJson(supperRecipe)
+                        val intent = Intent(this@planner, show_recipe_details::class.java)
+                        intent.putExtra("supperJson", supperRecipeJson)
+                        startActivity(intent)
+                    }
+                    snackButton.setOnClickListener {
+                        val snackRecipe = menu[3]
+                        val snackRecipeJson = Gson().toJson(snackRecipe)
+                        val intent = Intent(this@planner, show_recipe_details::class.java)
+                        intent.putExtra("snackJson", snackRecipeJson)
+                        startActivity(intent)
+                    }
                 }
             }
         }
@@ -132,32 +150,12 @@ class planner : AppCompatActivity() {
         super.onPause()
         val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        editor.putString("calories", caloriesTextView.text.toString())
-        editor.putString("breakfastButtonText", breakfastButtonText)
-        editor.putString("dinnerButtonText", dinnerButtonText)
-        editor.putString("supperButtonText", supperButtonText)
-        editor.putString("snackButtonText", snackButtonText)
-        editor.apply()
     }
 
     override fun onResume() {
         super.onResume()
         val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         val calories = sharedPreferences.getString("calories", "")
-        val breakfastButtonText = sharedPreferences.getString("breakfastButtonText", "")
-        val dinnerButtonText = sharedPreferences.getString("dinnerButtonText", "")
-        val supperButtonText = sharedPreferences.getString("supperButtonText", "")
-        val snackButtonText = sharedPreferences.getString("snackButtonText", "")
-
-        // Установка сохраненных значений на кнопки
-        val breakfastButton = findViewById<Button>(R.id.breakfastButton)
-        val dinnerButton = findViewById<Button>(R.id.dinnerButton)
-        val supperButton = findViewById<Button>(R.id.supperButton)
-        val snackButton = findViewById<Button>(R.id.snackButton)
-        breakfastButton.text = breakfastButtonText
-        dinnerButton.text = dinnerButtonText
-        supperButton.text = supperButtonText
-        snackButton.text = snackButtonText
         if (calories != null && calories.isNotEmpty()) {
             caloriesTextView.text = calories
         }
